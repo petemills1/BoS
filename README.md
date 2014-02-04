@@ -26,7 +26,7 @@ Note: Install pyinotify OUTSIDE of your virtual environment
 
 5. Open a new terminal window
 
-6. Start the BOS watcher via the shell command:
+6. Start the BoS watcher via the shell command:
     'build_on_save.py /path/to/your/directory'
 
 7. Exit the watcher using Ctrl + C

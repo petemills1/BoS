@@ -29,6 +29,11 @@ Note: Install pyinotify OUTSIDE of your virtual environment
 6. Start the BoS watcher via the shell command:
     'build_on_save.py /path/to/your/directory'
 
+    The above command will only watch the specified
+    directory. To watch the specified directory and
+    all its sub directories, use the command:
+    'build_on_save.py /path/to/your/directory -r'
+
 7. Exit the watcher using Ctrl + C
 
 NOTES:

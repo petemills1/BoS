@@ -87,10 +87,29 @@ def Monitor(path):
             else:
                 print 'IGNORED--File:', file_name, 'modified. This file type is not accounted for. No action taken \n'
 
+    sub_dirs = []
+    if monitor_all == '-r':
+        sub_dirs = [sub_dir for sub_dir in os.listdir(path) 
+          if os.path.isdir(os.path.join(path, sub_dir))]
+    elif monitor_all != None:
+        print '\nInvalid command. You typed: `' + monitor_all + '` Did you mean `-r`? Use `-r` to force BoS to watch for changes in all sub directories of ' + path
+        sys.exit()
 
     wm = WatchManager()
     notifier = Notifier(wm, PClose_Write())
     wm.add_watch(path, pyinotify.IN_CLOSE_WRITE)
+    if monitor_all == '-r':
+        for sub_dir in sub_dirs:
+            wm.add_watch(path + '/' + sub_dir, pyinotify.IN_CLOSE_WRITE)
+
+    print '\n---------------------------'
+    print 'BoS is locked and loaded!'
+    print 'Waiting for movement in:', path
+    if monitor_all == '-r':
+        print '\nWith sub directories: '
+        for sub_dir in sub_dirs:
+            print '\n',sub_dir
+    print '---------------------------'
 
     try:
         while 1:
@@ -107,11 +126,11 @@ def Monitor(path):
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
-        print '\n---------------------------'
-        print 'BoS is locked and loaded!'
-        print 'Waiting for movement in:', path
-        print '---------------------------'
+        if len(sys.argv) > 2:
+            monitor_all = sys.argv[2]
+        else:
+            monitor_all = None
     except IndexError:
-        print 'use: %s dir' % sys.argv[0]
+        print 'Invalid directory index'
     else:
         Monitor(path)
